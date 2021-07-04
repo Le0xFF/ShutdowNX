@@ -38,15 +38,17 @@ include $(DEVKITPRO)/libnx/switch_rules
 #   NACP building is skipped as well.
 #---------------------------------------------------------------------------------
 
-APP_TITLE   :=	ShutdownNX
+APP_TITLE   :=	ShutdowNX
 APP_AUTHOR  :=	Le0xFF
 APP_VERSION :=	1.0
+APP_TITLEID :=	0100001e0ff00000
 
 TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	build
 SOURCES		:=	source
 DATA		:=	data
 INCLUDES	:=	include
+CONFIG_JSON :=	config.json
 #ROMFS	:=	romfs
 
 #---------------------------------------------------------------------------------
@@ -170,14 +172,17 @@ $(BUILD):
 	@$(MAKE) --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
 
 #---------------------------------------------------------------------------------
+## ORIGINAL clean:
+#	@echo clean ...
+#ifeq ($(strip $(APP_JSON)),)
+#	@rm -fr $(BUILD) $(TARGET).nro $(TARGET).nacp $(TARGET).elf
+#else
+#	@rm -fr $(BUILD) $(TARGET).nsp $(TARGET).nso $(TARGET).npdm $(TARGET).elf
+#endif
+
 clean:
 	@echo clean ...
-ifeq ($(strip $(APP_JSON)),)
-	@rm -fr $(BUILD) $(TARGET).nro $(TARGET).nacp $(TARGET).elf
-else
-	@rm -fr $(BUILD) $(TARGET).nsp $(TARGET).nso $(TARGET).npdm $(TARGET).elf
-endif
-
+	@rm -fr $(BUILD) $(TARGET).pfs0 $(TARGET).nso $(TARGET).nro $(TARGET).nacp $(TARGET).elf $(TARGET).npdm
 
 #---------------------------------------------------------------------------------
 else
@@ -188,9 +193,37 @@ DEPENDS	:=	$(OFILES:.o=.d)
 #---------------------------------------------------------------------------------
 # main targets
 #---------------------------------------------------------------------------------
-ifeq ($(strip $(APP_JSON)),)
+# ORIGINAL:
+#ifeq ($(strip $(APP_JSON)),)
+#
+#all	:	$(OUTPUT).nro
+#
+#ifeq ($(strip $(NO_NACP)),)
+#$(OUTPUT).nro	:	$(OUTPUT).elf $(OUTPUT).nacp
+#else
+#$(OUTPUT).nro	:	$(OUTPUT).elf
+#endif
+#
+#else
+#
+#all	:	$(OUTPUT).nsp
+#
+#$(OUTPUT).nsp	:	$(OUTPUT).nso $(OUTPUT).npdm
+#
+#$(OUTPUT).nso	:	$(OUTPUT).elf
+#
+#endif
+#---------------------------------------------------------------------------------
 
-all	:	$(OUTPUT).nro
+all	: $(OUTPUT).pfs0 $(OUTPUT).nro
+
+ifeq ($(strip $(APP_JSON)),)
+$(OUTPUT).pfs0	:	$(OUTPUT).nso
+else
+$(OUTPUT).pfs0	:	$(OUTPUT).nso $(OUTPUT).npdm
+endif
+
+$(OUTPUT).nso	:	$(OUTPUT).elf
 
 ifeq ($(strip $(NO_NACP)),)
 $(OUTPUT).nro	:	$(OUTPUT).elf $(OUTPUT).nacp
@@ -198,15 +231,7 @@ else
 $(OUTPUT).nro	:	$(OUTPUT).elf
 endif
 
-else
-
-all	:	$(OUTPUT).nsp
-
-$(OUTPUT).nsp	:	$(OUTPUT).nso $(OUTPUT).npdm
-
-$(OUTPUT).nso	:	$(OUTPUT).elf
-
-endif
+#---------------------------------------------------------------------------------
 
 $(OUTPUT).elf	:	$(OFILES)
 

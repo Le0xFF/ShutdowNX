@@ -4,7 +4,5 @@
 
 int main(int argc, char *argv[])
 {
-    consoleInit(NULL);
-
-    appletRequestToShutdown();
+   appletRequestToShutdown();
 }

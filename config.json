@@ -1,22 +1,24 @@
 {
-    "name"                  : "ShutdowNX",
-	"title_id"              : "0x0100001e0ff00000",
-	"title_id_range_min"    : "0x0100000000000000",
-	"title_id_range_max"    : "0x0fffffffffffffff",
-	"main_thread_stack_size": "0x00002000",
-	"main_thread_priority"  : 49,
-	"default_cpu_id"        : 3,
-	"process_category"      : 0,
-	"is_retail"             : true,
-	"pool_partition"        : 2,
-	"is_64_bit"             : true,
-	"address_space_type"    : 1,
-	"filesystem_access"     : {
+    "name"                               : "ShutdowNX",
+	"title_id"                           : "0x0100001e0ff00000",
+	"title_id_range_min"                 : "0x0100000000000000",
+	"title_id_range_max"                 : "0x0fffffffffffffff",
+	"main_thread_stack_size"             : "0x00002000",
+	"main_thread_priority"               : 49,
+	"default_cpu_id"                     : 3,
+	"system_resource_size"               : "0x0",
+	"disable_device_address_space_merge" : false,
+	"process_category"                   : 0,
+	"is_retail"                          : true,
+	"pool_partition"                     : 2,
+	"is_64_bit"                          : true,
+	"address_space_type"                 : 1,
+	"filesystem_access" : {
 		"permissions": "0xffffffffffffffff"
 	},
-    "service_host"       : [ "*" ],
-    "service_access"     : [ "*" ],
-    "kernel_capabilities": [
+    "service_host"                       : [ "*" ],
+    "service_access"                     : [ "*" ],
+    "kernel_capabilities"                : [
         {
             "type" : "kernel_flags",
             "value": {
